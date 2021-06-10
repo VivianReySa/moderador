@@ -129,7 +129,6 @@ para roboto negrita (Titulos):
 .container-mensajes{
     width: 900px;
     margin: auto;
-    margin-bottom: 30px;
 }
 .mensaje{
     display: flex;
@@ -361,6 +360,7 @@ html, body{
     margin-top: 30px;
     margin-bottom: 50px;
 }
+<<<<<<< HEAD
 /*-------------------empieza USUARIOS BLOQUEADOS-------------------*/
 .container-blockUser{
     border: solid 5px #022422;
@@ -461,3 +461,74 @@ html, body{
     min-height: 430;
 }*/
 /*-------------------termina USUARIOS BLOQUEADOS-------------------*/
+=======
+
+/*---------------PLANTILLA DE REPORTE*/
+.logos{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: auto;
+}
+#logo_gu{
+    display: flex;
+    justify-content: end;
+}
+#logo_uam img{
+    width: 60%;
+}
+#logo_gu img{
+    width: 60%;
+}
+.template_report{
+    margin: auto;
+    width: 70%;
+    height: 70%;
+}
+.reporte-cont{
+    margin: auto;
+    padding: 20px;
+    padding-bottom: 0;
+    width: 70%;
+    height: 100%;
+    border: #ff8000 2px solid;
+    border-radius: 30px;
+}
+/*---------------------------------reporte gv*/
+.cabeceras{
+    font-weight: 500;
+}
+.container-mensajes.reporte{
+    padding: 20px;
+    border: #022422 solid 2px;
+    border-radius: 30px;
+}
+/*************************************resultados filtros******/
+.checkbox{
+    width: 30%;
+    border: #022422 solid 3px;
+    text-align: center;
+    margin: auto;
+    margin-top: 50px;
+    padding: 30px;
+    border-radius: 30px;
+}
+input[type=checkbox]
+{
+  transform: scale(1.5);
+}
+.resultados-filtros{
+    width: 70%;margin: auto;
+    display: flex;
+    justify-content: space-around;
+}
+.result{
+    min-width: 500px;
+    border: #022422 solid 3px;
+}
+.result{
+    margin-right: 30px;
+    padding: 30px;
+    border-radius: 30px;
+}
+>>>>>>> 774c04513d6478babaec6a84015361359f2178d2

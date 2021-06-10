@@ -1,4 +1,4 @@
-import json
+"""import json
 
 
 def archivo():
@@ -17,5 +17,10 @@ def archivo():
             print(i['text'])
             print("")
         
+<<<<<<< HEAD:conversacion.py
     return mensajes
     
+=======
+    return mensajes"""
+    
+>>>>>>> 774c04513d6478babaec6a84015361359f2178d2:back/conversacion.py

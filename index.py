@@ -1,20 +1,21 @@
-from typing import runtime_checkable
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, make_response
 from werkzeug.utils import secure_filename
-import os
-import modulo1 
+from typing import *
 import modulo2
-import conversacion  
+import pdfkit
+import os
 
+<<<<<<< HEAD
 res = modulo1.iniciar()
 res1 = conversacion.archivo()
 res2 = modulo2.filtro()
+=======
+# lista que almacena lo que retorna modulo2
+res = []
+>>>>>>> 774c04513d6478babaec6a84015361359f2178d2
 
 # objeto apara crear rutas
 app = Flask(__name__)
-
-# Carpeta de subida
-app.config['UPLOAD_FOLDER'] = "static/archivos"
 
 # / es pagina principal
 @app.route('/')
@@ -44,17 +45,60 @@ def cargar_ac():
 # simulacion de chat
 @app.route('/simulacion-chat')
 def simulacion_chat():
-    return render_template('simulacion-chat.html',resarchivo=res)
+    return render_template('simulacion-chat.html',datos=res)
+
+#elige que filtrar
+@app.route('/elegir-filtros',methods=['POST','GET'])
+def elegir_filtros():
+    return render_template('elegir-filtros-rs.html')
+
+#elige que bloquear
+@app.route('/elegir-bloqueos',methods=['POST','GET'])
+def elegir_bloqueos():
+    return render_template('elegir-bloqueos-rs.html')
+
+# resultados de la eleccion de filtros
+@app.route('/resultado-filtros', methods=['POST','GET'])
+def resultado_filtros():
+    if request.method=='POST':
+        opciones = request.form.getlist('filtrosm')
+    return render_template('resultado_filtros.html',datos=res, op=opciones)
+
+# resultados de lo que bloqueo
+@app.route('/resultado-filtros-bloqueados', methods=['POST','GET'])
+def resultado_filtros_bloqueados():
+    if request.method=='POST':
+        opciones = request.form.getlist('bloqueos')
+    return render_template('resultado_filtros_bloqueados.html',datos=res, op=opciones)
 
 # muestra mensajes agresivos
 @app.route('/mensajes-agresivos')
 def filtro_msj_agr():
-    return render_template('filtro-msj-agr.html',resModulo1=res)
+    return render_template('filtro-msj-agr.html',datos=res)
 
 # bloquea mensajes agresivos
 @app.route('/bloqueaMsj')
 def bloquea():
-    return render_template('bloqueaMsj.html', resModulo2=res)
+    return render_template('bloqueaMsj.html', datos=res)
+
+# reporte de agresion gv
+@app.route('/reporte-gv')
+def make_reportGV():
+    return render_template('reporte-gv.html',datos=res)
+
+@app.route('/reporte-dw')
+def make_reportDW():
+    return render_template('reporte-dw.html',datos=res)
+
+# descargar el PDF
+@app.route('/descargar')
+def dw_reporte():
+    options = {"enable-local-file-access": None}
+    path_wkhtmltopdf = "C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe"
+    config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+    f=open("./templates/reporte-dw.html","r")
+    pdf = pdfkit.from_file(f,'out.pdf', configuration=config, options=options)
+    return render_template('reporte-dw.html')
 
 # bloquea mensajes agresivos
 @app.route('/usuarios-bloqueados')
@@ -66,17 +110,29 @@ def bloquea_users():
 def contacto():
     return render_template('contacto.html')
     
+# Carpeta de subida
+app.config['UPLOAD_FOLDER'] = "static/archivos"
+
 # cargar archivo a server
-@app.route("/uploader", methods=['POST'])
+@app.route("/uploader", methods=['POST','GET'])
 def uploader():
     if request.method == "POST":
+        tipo = request.form['tipo']
         # obtenemos el archivo del input "archivo"
         f = request.files['archivo']
         filename = secure_filename(f.filename)
         # Guardamos el archivo en el directorio "Archivos"
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-        msg='se subio el archivo correctamente'
-        return render_template ('cargar-rs.html',msg=msg)
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'],'archivo.json'))
+        msg='Archivo cargado con exito'
+        res.append(modulo2.iniciar())
+        for elem in res:
+            print(elem)
+        if tipo == 'rs':
+            return render_template ('cargar-rs.html',msg=msg)
+        elif tipo == 'gv':
+            return render_template('cargar-gv.html',msg=msg)
+        elif tipo == 'ac':
+            return render_template('cargar-ac.html',msg=msg)
 
 # ctrl+shift+r para recargar sin cache
 if __name__ == '__main__':

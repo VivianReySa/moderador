@@ -22,9 +22,16 @@ import joblib
 model=joblib.load('model.pkl')
 vect=joblib.load('vectorizer.pkl')
 
+import pprint
+
+
 def iniciar():
+<<<<<<< HEAD:modulo1.py
     '''
     train = pd.read_csv('static/archivos/train_aggressiveness.csv', encoding = 'utf-8')
+=======
+    train = pd.read_csv('static/files/train_aggressiveness.csv', encoding = 'utf-8')
+>>>>>>> 774c04513d6478babaec6a84015361359f2178d2:back/modulo2.py
     df = train.copy()
     # df.head()
 
@@ -91,8 +98,13 @@ def iniciar():
 
     '''
     # Opening JSON file
+<<<<<<< HEAD:modulo1.py
     f = open('static/archivos/conversation001.json', encoding="utf8")
     
+=======
+    f = open('static/files/conversation001.json', encoding="utf8")
+
+>>>>>>> 774c04513d6478babaec6a84015361359f2178d2:back/modulo2.py
     # returns JSON object as
     # a dictionary
     data = json.load(f)
@@ -101,28 +113,16 @@ def iniciar():
     # list
     mensajes=[]
     for i in data['messages']:
-        # print(i['text'])
-        mensajes.append(i)
-
-    
-        
-    # print(len(mensajes))
-    cont = 0
-    # print(mensajes)
-    
-    for i in mensajes:
-        if i['text'] == "":
-            mensajes.pop(cont)
-        cont += 1
-    conv_users = []
-    for elem in mensajes:
-        if elem['type'] == 'message':
-            if elem['from'] not in conv_users:
-                conv_users.append(elem['from'])
-
+    # print(i['text'])
+        menU = (i['from'])
+        tex = (i['text'])
+        men=(menU+tex)
+        mensajes.append(men)
+        #mensajes.append(i['text'])
+    # Closing file
     f.close()
 
-    """mensajes_nolist=[]
+    mensajes_nolist=[]
     # print("imp\n", mensajes)
     for elem in mensajes:
         if type(elem) == str:
@@ -133,36 +133,42 @@ def iniciar():
                 # process_text(elem2)
                 mensajes_nolist.append(elem2)
         else:
-            continue"""
+            continue
 
     determinantes = []
-    mensajes_agresivos = []
-    mensajes_no_agresivos = []
+    mensajes_Noagresivos = []
+    for elem in mensajes_nolist:
+        if type(elem)==str:
+            # print(elem)
+            determinante = model.predict(vect.transform([elem]))
+            if determinante == 0:
+                mensajes_Noagresivos.append(elem)
+            determinantes.append(determinante)
 
-
-    for elem in mensajes:
-        aux = elem['text']
-        determinante = model.predict(vect.transform([aux]))
-        if determinante == 1:
-            mensajes_agresivos.append(elem)
-        elif determinante == 0:
-            mensajes_no_agresivos.append(elem)
-        determinantes.append(determinante)
-    print('dt:',determinantes)
     contador = 0
-    """for elem in determinantes:
+    for elem in determinantes:
         if elem == 0:
             tipo = 'NO AGRESIVO'
             print('El mensaje ',contador,' es ',tipo)
         else:
             tipo = 'AGRESIVO'
             print('El mensaje ',contador,' es ',tipo)
-        contador = contador + 1"""
+        contador = contador + 1
 
-
+<<<<<<< HEAD:modulo1.py
     #with open('text_classifier', 'wb') as picklefile:
         #pickle.dump(model,picklefile)
 
     return mensajes_agresivos, conv_users, mensajes, mensajes_no_agresivos
 
+=======
+    with open('text_classifier', 'wb') as picklefile:
+        pickle.dump(model,picklefile)
+
+    return mensajes_Noagresivos
+
+    
+
+    
+>>>>>>> 774c04513d6478babaec6a84015361359f2178d2:back/modulo2.py
 
